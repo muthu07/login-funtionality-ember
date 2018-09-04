@@ -1,5 +1,5 @@
 /* eslint-env node */
-'use strict';
+//'use strict';
 
 // To use it create some files under `mocks/`
 // e.g. `server/mocks/ember-hamsters.js`
@@ -12,19 +12,21 @@
 const bodyParser= require("body-parser");
 
 module.exports = function(app) {
+  console.log('res')
+  app.use(bodyParser.urlencoded({extended:true}));
   app.post('/token',function(req,res){
-    console.log(req.body)
-    if(req.body.usernsme == "muthu" && req.body.password == "pass"){
+    console.log(res)
+    if(req.body.username == "muthu" && req.body.password == "pass"){
       res.send({access_token:"malai"})
     }else{
-      res.status(400).send({error:"invalid"})
+      res.status(400).send({error:"invalid"+ req.body.password + req.body.usernsme})
     }
   });
 
   app.use(bodyParser.urlencoded({extended:true}));
 
   app.get('/api/students',function(req,res){
-    if(req.header.authorization !== "Bearer malai"){
+    if(req.headers.authorization != "Bearer malai"){
       return res.status(401).send('Unauthorized');
     }
     return res.status(200).send({
