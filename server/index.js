@@ -12,10 +12,8 @@
 const bodyParser= require("body-parser");
 
 module.exports = function(app) {
-  console.log('res')
   app.use(bodyParser.urlencoded({extended:true}));
   app.post('/token',function(req,res){
-    console.log(res)
     if(req.body.username == "muthu" && req.body.password == "pass"){
       res.send({access_token:"malai"})
     }else{
@@ -26,8 +24,9 @@ module.exports = function(app) {
   app.use(bodyParser.urlencoded({extended:true}));
 
   app.get('/api/students',function(req,res){
-    if(req.headers.authorization != "Bearer malai"){
-      return res.status(401).send('Unauthorized');
+
+    if(req.headers.authorization != "malai"){
+      return res.status(401).send("Unauthorized");
     }
     return res.status(200).send({
       students:[
